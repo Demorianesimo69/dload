@@ -1,0 +1,19 @@
+default 0
+timeout 0
+
+title find /efi/grub/menu.lst
+	errorcheck off
+	find --set-root /efi/grub/menu.lst
+	configfile /efi/grub/menu.lst
+	errorcheck on
+	commandline
+
+title commandline
+	commandline
+
+title reboot
+	reboot
+
+title halt
+	halt
+

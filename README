@@ -1,0 +1,35 @@
+Welcome to DLOAD, the bootloader used in the Project Diamond Linux distro.
+
+This program derives from grub4dos, and is licensed under GPLv2 as a result.
+(learn more: http://grub4dos.chenall.net)
+
+== Compilation from source ==
+
+You will require an x86/amd64 system with the following tools installed:
+
+1) GNU Compiler Collection, Version 4.8 
+   NOTE: Versions up to 10 can be used.
+2) GNU Make
+3) Netwide Assembler (NASM)
+4) GNU Binutils
+5) GCC Multilib, Version 4.8 or newer upto 10
+6) *Optional: UPX (Ultimate Packer for eXecutables): Required only for
+   ELTORITO.SYS
+
+In order to compile, do a make. If needed, specify the needed compiler by
+for example running:
+
+	CC=gcc-10 make
+
+or:
+
+	export CC=gcc-10
+	make
+
+WARNING: DO NOT SET MULTIPLE JOBS (-j) IN MAKE, IT WILL BREAK COMPILATION
+
+If you want to compile only the EFI loader: make efi
+If you want to compile only the MBR loader: make mbr
+
+In order to clean, you may run make clean.
+or for the respective trees, you may run make cleanefi or make cleanmbr.

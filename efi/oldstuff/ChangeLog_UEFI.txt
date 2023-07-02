@@ -1,0 +1,246 @@
+﻿更新说明：
+2023-06-23 (yaya)
+  修正configfile函数文件名溢出。
+  碎片数由39增加到126。
+  修正分区签名丢失。
+  修正BOOTIA32.EFI启动时进不了菜单而重启。
+  改进color函数帮助信息。issues #414
+  避免分区项空洞。issues #416
+
+2023-06-06 (yaya)
+  适应gcc-11高版本编译。
+
+2023-05-10 (yaya)
+  修正udf光盘加载到2Gb以上内存失败的问题。
+  确定引导驱动器恒定为0x80。
+  支持 USB 逻辑单元设备。
+  kernel 函数增加 --handover 和 --loadfile2 参数，以便强制使用 EFI Handover Protocol 或 LoadFile2 协议。
+  增加打印路径的内部函数，以便不支持设备路径到文本协议的设备使用。
+  改进设备启动。issues #404, issues #405
+
+2023-03-29 (yaya)
+  完善外部命令进度条。
+  改进ISO启动。
+  修正splashimage函数。issues #401
+  修正partnew函数。issues #402
+  修正map函数的unmap功能。issues #403
+
+2023-03-19 (a1ive)
+  支持多行 initrd 命令
+  支持 cpio newc initrd
+
+2023-03-14 (a1ive)
+  修正 setkey 函数。
+  chainloader 和 kernel 命令行支持非 ASCII 字符。
+
+2023-03-11 (a1ive)
+  放弃使用 EFI Handover Protocol 启动 Linux，改用 LoadFile2 提供 initrd 加载功能。
+  Linux 6.2 将已废弃的 EFI Handover Protocol 设为可选项：
+    https://github.com/torvalds/linux/commit/cc3fdda2876e58a7e83e558ab51853cf106afb6a
+  不再支持 x64 UEFI 下启动 32 位内核 (或者反过来)。
+  不再支持 ntloader v1 版本，请使用 ntloader v2 版本。
+
+2023-02-23 (yaya)
+  增加外部定时器。(应用之一，外部命令进度条ProgressBar)。
+  修正菜单最后一行没有换行符而缺失的问题。
+  修正切换视频模式菜单框失误的问题。
+  修正文本模式菜单显示。
+  graphicsmode函数增加参数test。
+    示例：graphicsmode --test 水平像素 垂直像素
+    返回：分辨率存在返回模式号，否则返回0。
+
+2022-12-27 (yaya)
+  支持差分VHD。(如果使用svbus,请加载到内存)
+
+2022-12-22 (yaya)
+  撤销issues #384补丁。会使得外部命令SISO、RUN列表文件时，扩展名只显示前2个。
+  修正parttype函数。issues #389
+  graphicsmode函数增加'--info'参数，显示当前支持的图形模式信息。
+
+2022-11-28 (yaya)
+  修正splashimage函数的动画功能。issues #387
+  修正graphics函数，避免图形模式时，在命令行滚屏，第24行被有其他属性的空格清屏.
+  消除echo @%*@结尾多余的空格字符。issues #384
+  避免echo$[0xf0]输出00字符。issues #385
+
+2022-10-27 (yaya)
+  calc函数支持64位除法。增加变量@retval64，返回calc函数的64位计算值。
+  echo函数的 [-P:XXYY] 功能，允许XX(YY)为十六进制值。
+  修正在控制台设置模式3会死机的问题。
+  启动时显示内存信息。
+
+2022-09-15 (yaya)
+  partnew函数增加'--force'参数，允许覆盖独立分区。
+
+2022-03-26 (yaya)
+  改进启动功能。
+  修正 ext4 读函数。
+  修正挂载外部命令缓存溢出。
+
+2022-01-18 (yaya)
+  配合支持碎片的svbus。
+  加快实机命令行滚屏速度。
+  撤销吸收命令行尾部的空格。
+  取消使用设备路径实用程序协议(低版本UEFI固件不支持)。
+  增加变量：当前水平像素(0x834c)。
+  map函数增加参数：--no-hook(不挂载)。
+  允许挂载多个虚拟磁盘。
+
+2021-11-05 (yaya)
+  修复管道符‘|’后面紧接call(或者goto)标签时，必须补空格。issues #341
+  迁就有bug的ISO光盘镜像。
+
+2021-10-13 (yaya)
+  增强菜单项目、项目注释以及菜单字符串的文字颜色功能。例如：
+    title boot $[0xff00ff]Windows $[]10x64
+  修正 NTFS 有偏移时的写操作错误。
+  修正 dd 函数在同一文件向后移动时的错误。
+  吸收命令行尾部的空格。
+  增加 map --unmap= 实际功能，可以卸载映射驱动器。
+  修正卸载碎片插槽的错误。
+  改进启动功能。
+
+2021-08-18 (yaya)
+  安装虚拟分区，不再占用映射插槽。
+  改进启动存在的磁盘。
+
+2021-08-17 (yaya)
+  在 debug 函数增加 ctrl-c-trap= 参数。为零时，不检测批处理的 ctrl+c 按键。
+  解除 dd 与 write 函数的安全限制。
+  修正 errnum 序号错位。
+
+2021-07-23 (a1ive)
+  添加 beep 命令。
+
+2021-07-22 (a1ive)
+  添加 parttype 命令。
+
+2021-06-19 (yaya)
+  增加 ADDR_RET_STR 以便外部命令使用。
+
+2021-06-02 (a1ive)
+  支持嵌入字库、模块(.mod文件)。
+  mkimage.exe -d 目录 -p /efi/grub -o BOOTX64.EFI -O x86_64-efi -c 嵌入菜单 -f 嵌入字库 -m 嵌入模块
+  mkimage.exe -d 目录 -p /efi/grub -o BOOTIA32.EFI -O i386-efi -c 嵌入菜单 -f 嵌入字库 -m 嵌入模块
+
+2021-05-28 (yaya)
+  改进热键。可以把菜单项中的任意英文字母作为热键。
+  增加参数：setmenu --hotkey-color=COLOR  设置热键颜色。
+  例如：
+    setmenu --hotkey-color=0xffff
+    hotkey -A [F3] "reboot" [Ctrl+d] "commandline"
+    title [F4] Boot Win
+    title Boot ^Win 10
+
+2021-05-19 (yaya)
+  热键函数外置。
+  使用方法：hotkey 参数
+
+2021-05-01 (yaya)
+  修复不能读写ud隐藏分区的问题。
+
+2021-04-24 (yaya)
+  1. 支持嵌入菜单。把 kernel.img 与 grub-mkimage.exe 放在同一目录。
+    grub-mkimage.exe -d 目录 -p /efi/grub -o BOOTX64.EFI -O x86_64-efi -c 嵌入菜单
+    grub-mkimage.exe -d 目录 -p /efi/grub -o BOOTIA32.EFI -O i386-efi -c 嵌入菜单
+  2. 改进批处理调试，使用行号作为断点，可使用10个断点。
+    debug 批处理文件名 参数
+    b  设置断点（10个）。  例如: b 45  (当前批处理, 45行);   b p2,134  (2号批处理, 134行)
+    b l  显示断点  (断点号,批处理号,批处理行号)
+    b c  清除断点   例如: c2 (清除2号断点);   c (清除全部断点)
+    n  运行至断点
+    c  进入命令行  按'ESC'键返回批处理调试
+    s  跳过本行
+    e  运行批处理至结束
+    q  退出批处理
+    p  单步执行(跨过子程序)
+    其他  单步执行(遇到子程序进入)
+  3. 内置 0x20-0x7f、0x2191、0x2193 unicode 16*16 点阵字符。
+
+2021-02-10 (a1ive)
+  优先使用 ACPI 关机。
+
+2021-01-31 (yaya)
+  支持启动一级差分VHD镜像。
+
+2021-01-12 (a1ive)
+  支持加载多个 initrd 文件。
+
+2021-01-12 (yaya)
+  增加变量 @uefi。值为64/32，用于判断UEFI系统是64/32位。00是BIOS系统。
+  修正外部命令。  
+
+2021-01-09 (yaya)
+  启动 bootmgfw.efi 。
+  修正 graphicsmode，displaymem 函数。
+  新设内部变量： 0x8272(1字节) UEFI 启动环境(32/64位)。
+
+2020-12-15 (a1ive)
+  添加 load 命令以加载 EFI 驱动。
+
+2020-12-14 (yaya)
+  一次编译完成32位、64位版本。
+
+2020-12-10 (yaya)
+  使用 "./build i386" 编译 BOOTIA32.EFI 。
+  可以使用参数 "--top" 将镜像强制加载到 4Gb 以上内存。
+  修正字符串颜色显示，修正映射磁盘读写。
+
+2020-11-26 (yaya)
+  合并 i386 与 x86_64 源代码。
+  修正 hotkey 及 exit_g4d 函数。
+
+2020-11-19 (a1ive)
+  支持使用 kernel 和 initrd 命令启动 linux 内核。
+
+2020-11-18 (yaya)
+  1. 菜单目录更改为：/efi/grub/menu.lst
+  2. 支持实体光盘、硬盘启动。
+  3. 多个光盘时，启动光盘调整为第一光盘，以适应 windows。
+  4. 增加退出 GRUB4DOS 函数 exit_g4d。
+  5. 批处理变更：
+     函数下标不变，参数由 32 位变更为 64 位。(Fn.下标 参数1 参数2 ...)
+     变量地址由 0x8304 变更为 0x8308，由 32 位变更为 64 位。
+     call Fn 函数，如果使用变量 0x8200-0x8400(不含) 则要在前面加g4e，如 g4e0x8217。
+     批处理增加 else 函数。增加 {脚本集} 表示法。
+     如：
+     if 条件
+     {
+       脚本集
+       if 条件 {
+         脚本集 }
+       else {
+         脚本集 }
+     }
+     else if 条件
+     {
+       脚本集
+     }
+     else
+     {
+       脚本集
+     }
+     注意：
+     1. 大括弧必须是一行的结尾。
+     2. 脚本集可多行书写。
+     3. 大括弧内部可以嵌套。
+
+2020-10-29 (yaya)
+  使用于 UEFI 环境的 GRUB4DOS。
+  
+  这是一个庞大的工程，几乎所有的代码都捋了一遍。修改了控制台键盘输入输出，控制台屏幕输出，内存控制，
+  驱动器控制，获取日期时间，暂停控制，图形模式及Unicode字体实现，PXE 网启，等等。
+  
+  开发过程中，参考了 GRUB2 源码。有关映射，参考了 wintoflash 的源码。
+  
+  1. 可以启动 efi 文件。
+  2. 可以启动 iso 及 img 文件。
+  
+  与旧版本不同之处：
+  1. 可以通过 graphicsmode 命令查看系统支持的图形模式。
+  2. map 函数执行后即挂载。不需要执行 --hook 指令。
+  3. 取消 --hook，--unhook，--rehook，--unmap=，--floppies=，--harddrives= 指令。
+  4. 在 UEFI 环境，可以从 0x80 以外的磁盘启动，因此不需要交换磁盘操作，如 map (hd0) (hd1)。
+  5. 取消删除磁盘功能，如 map (hd1) (hd1)。
+  6. 目前 PXE 网启只支持 tftp。
+  
