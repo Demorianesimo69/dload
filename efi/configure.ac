@@ -21,7 +21,7 @@ AM_SILENT_RULES([yes])
 AM_PROG_AS
 
 dnl Generate stage2/grub4dos_version.h
-echo "#define GRUB4DOS_VERSION \"`cat grub4dos_version` `date -u +%Y-%m-%d`\"" > grub4dos_version.h
+echo "#define GRUB4DOS_VERSION \"`cat dloadver` `date -u +%Y-%m-%d`\"" > grub4dos_version.h
 echo "#define GRUB4DOS_INT_VER `date -u +%Y%m%d`" > grub4dos_int_ver.h
 
 AC_CANONICAL_HOST
