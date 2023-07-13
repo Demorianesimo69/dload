@@ -12,13 +12,10 @@ DATE=`date -u +%Y-%m-%d`
 TIME=`date -u +%H-%M-%S`
 RELEASE=dload-${VER}-${DATE}-${TIME}
 
-#COPY_FILES="COPYING README_GRUB4DOS*.txt ChangeLog_*.txt \
-#	config.sys default menu.lst grub.pif config.h\
-#	stage2/pre_stage2.exec"
-
 [ -z "$GRUB4DOS_TEMP" ] && GRUB4DOS_TEMP=./${RELEASE}-temp
 	
-files=$(echo *)
+#files=$(echo *)
+files="acinclude.m4 aclocal.m4 autogen.sh bootstrap.sh build compile config.guess config.h.in config.sub configure configure.ac COPYING default depcomp dloadver GNUmakefile install-sh ldscript Makefile.am Makefile.in mkimage mkimage.exe mkimage.i386 preset_menu.lst stage2"
 if ! [ -d ${GRUB4DOS_TEMP} ] ; then
 	mkdir ${GRUB4DOS_TEMP} || exit $?
 fi
@@ -62,12 +59,4 @@ cd $SOURCE_DIR
 
 mkdir $RELEASE
 
-#rm -f ${RELEASE}.zip ${RELEASE}.rar ${RELEASE}.tar.gz || exit $?
-#if ! 7z a ${RELEASE}.7z ${GRUB4DOS_TEMP}/BOOTX64.EFI ${GRUB4DOS_TEMP}/BOOTIA32.EFI $SOURCE_DIR/ChangeLog_UEFI.txt \
-#    $SOURCE_DIR/menu.lst  $SOURCE_DIR/default ${GRUB4DOS_TEMP}/Get_Source_of_This_Build.txt ${GRUB4DOS_TEMP}/grub4dos_${CURR_REVISION}.diff \
-#    ${GRUB4DOS_TEMP}/i386-efi ${GRUB4DOS_TEMP}/x86_64-efi mkimage.exe; then
-#	echo 7z failed. Continue with zip or tar...
-#fi
-
-cp $GRUB4DOS_TEMP/BOOTIA32.EFI $RELEASE/
-cp $GRUB4DOS_TEMP/BOOTX64.EFI $RELEASE/
+cp $GRUB4DOS_TEMP/*.EFI $RELEASE/

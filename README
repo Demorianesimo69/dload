@@ -13,8 +13,7 @@ You will require an x86/amd64 system with the following tools installed:
 3) Netwide Assembler (NASM)
 4) GNU Binutils
 5) GCC Multilib, Version 4.8 or newer upto 10
-6) *Optional: UPX (Ultimate Packer for eXecutables): Required only for
-   ELTORITO.SYS
+6) *Optional: UPX and NASM: Required only for ELTORITO.SYS
 
 In order to compile, do a make. If needed, specify the needed compiler by
 for example running:

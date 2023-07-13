@@ -15,12 +15,10 @@ COPY_FILES_BINARY=" default \
 	stage2/grldr stage2/grub.exe stage2/badgrub.exe stage2/grldr.mbr stage2/bootlace.com \
 	stage2/hmload.com stage2/grldr.pbr stage2/grldr_cd.bin"
 
-#no
-# rm -rf *.zip *.7z *~ || exit $?
 [ -z "$GRUB4DOS_TEMP" ] && GRUB4DOS_TEMP=./${RELEASE}-temp
 
 #files=$(echo *)
-files="GNUmakefile Makefile.am Makefile.in acinclude.m4 aclocal.m4 autogen.sh bootstrap.sh build build.bak compile config.guess config.h.in config.sub configure configure.ac default depcomp dloadver install-sh ldscript oldstuff preset_menu.lst stage2"
+files="GNUmakefile Makefile.am Makefile.in acinclude.m4 aclocal.m4 autogen.sh bootstrap.sh build compile config.guess config.h.in config.sub configure configure.ac default depcomp dloadver install-sh ldscript preset_menu.lst stage2"
 if ! [ -d ${GRUB4DOS_TEMP} ] ; then
 	mkdir ${GRUB4DOS_TEMP} || exit $?
 fi
@@ -36,40 +34,15 @@ cd ${GRUB4DOS_TEMP} || exit $?
 ./configure --enable-preset-menu=preset_menu.lst || exit $?
 make clean
 make || exit $?
-# TODO: Is this useful at all for real?: rm -rf grub4dos-${VER}
 mkdir ${RELEASE} || exit $?
 [ -f stage2/eltorito.sys ] && cp stage2/eltorito.sys ${RELEASE}
 cp $COPY_FILES_BINARY ${RELEASE} || exit $?
 cd ${RELEASE}
-# generate bootlace64.com
-# Useless and segfaults for now, possible TODO: Remove this later
-#if [ -f bootlace.com ]; then
-#	Seek=$((0x`objdump -s bootlace.com|awk '/7f45/{print $1|"sed s/4/0/"}'`))
-#	dd if=bootlace.com of=bootlace.head bs=1 count=64 skip=$Seek
-#	dd if=bootlace.com of=bootlace.body bs=1 skip=64
-#	cat bootlace.head bootlace.body > bootlace64.com
-#	chmod a+x bootlace64.com
-#	rm -f bootlace.body bootlace.head
-#fi
-# Can't find shit
-# mkdir docs && mv *.txt docs/
-# mkdir sample && mv menu.lst default config.sys sample/
 cd ..
 
 #############################################
-#	     Build chink version
-#             (screw this shit)
-#############################################
-
-#patch -p1 < patch-chinese.diff || exit $?
-#make || exit $?
-
-#mkdir grub4dos-${VER}/chinese || exit $?
-#cp README_GRUB4DOS_CN.txt stage2/grldr stage2/grub.exe stage2/badgrub.exe grub4dos-${VER}/chinese || exit $?
-
-#############################################
-#	Create ZIP ball or T*R ball
-#  (screw this shit and FUCK YOU STANFORD)
+#		  POSTBUILD
+#    Manage files, copy to release, ect.
 #############################################
 
 cd $SOURCE_DIR
@@ -79,15 +52,7 @@ if [ -d ipxe ] ; then
 	make bin/undionly.kpxe EMBED=$SOURCE_DIR/ipxegrldr.ipxe,${GRUB4DOS_TEMP}/${RELEASE}/grldr && cp -af bin/undionly.kpxe ${GRUB4DOS_TEMP}/${RELEASE}/ipxegrldr
 	cd $SOURCE_DIR
 fi
-#rm -f ${RELEASE}.zip ${RELEASE}.rar ${RELEASE}.tar.gz || exit $?
-#if ! 7z a ${RELEASE}.7z ${GRUB4DOS_TEMP}/grub4dos-${VER} ; then
-#	echo 7z failed. Continue with zip or tar...
-#	if ! zip -r -q ${RELEASE}.zip ${GRUB4DOS_TEMP}/grub4dos-${VER} ; then
-#		tar -czf ${RELEASE}.tar.gz ${GRUB4DOS_TEMP}/grub4dos-${VER}
-#	fi
-#fi
 
 mkdir ${RELEASE}
 cp -rfv ${GRUB4DOS_TEMP}/${RELEASE}/* ${RELEASE}/
 
-# Do not remove grub4dos-temp as we can check and re-use it later.
